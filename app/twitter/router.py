@@ -15,10 +15,3 @@ async def create_twitter_account(data: Twitter) -> BaseResponse:
 async def create_twitter_post(data: TwitterPost) -> BaseResponse:
     await data.save()
     return BaseResponse(data=data, message=Success.created)
-
-@router.post("/send/random/post")
-async def send_random_post():
-    post = await TwitterPost.random()
-    accout = await Twitter.random()
-    res = accout.send_post(post.text)
-    return res
