@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "imleme"
+version = "0.1.0"
+description = ""
+authors = ["enesdogan00 <enesdogan26@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tweepy = "^4.14.0"
+fastapi = "^0.104.1"
+pydantic = "^2.5.2"
+beanie = "^1.23.6"
+starlette-context = "^0.3.6"
+uvicorn = "^0.24.0.post1"
+python-decouple = "^3.8"
+fastapi-jwt = "^0.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
