@@ -6,6 +6,7 @@ from decouple import config
 from fastapi_jwt import JwtAccessBearer
 
 from app.twitter.model import Twitter, TwitterPost
+from app.rss.model import RSS
 
 access_security = JwtAccessBearer(
     secret_key=token_urlsafe(32),
@@ -20,7 +21,8 @@ async def init_db():
         connection_string=config("MONGO_URI"),
         document_models=[
          Twitter,
-         TwitterPost
+         TwitterPost,
+         RSS,
         ],
         recreate_views=True,
     )

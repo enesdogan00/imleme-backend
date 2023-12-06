@@ -1,3 +1,4 @@
+from datetime import datetime
 from random import randint
 from beanie import Indexed
 import tweepy
@@ -8,7 +9,9 @@ from app.mixins.general import BaseDocument
 
 
 class TwitterPost(BaseDocument):
-    text: Indexed(str, unique=True) = Field(title="Tweet İçeriği")
+    text: Indexed(str, unique=True) = Field(title="Tweet İçeriği", default="")
+    date: datetime|None = Field(title="Tarih", default_factory=datetime.now)
+    website:str = Field(title="Website", default="")
     sent: bool = Field(title="Gönderildi mi?", default=False)
     
     @classmethod
@@ -19,6 +22,7 @@ class TwitterPost(BaseDocument):
         return random_document[0]
 
 class Twitter(BaseDocument):
+    active: bool = Field(title="Aktif",default=True)
     name: str|None = Field(title="İsim",default="")
     consumer_key: str = Field(title="Consumer Key")
     consumer_secret: str = Field(title="Consumer Secret")
