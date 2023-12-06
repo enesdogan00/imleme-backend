@@ -11,7 +11,7 @@
             "module": "uvicorn",
             "args": [
                 "app.app:app",
-                "--reload"
+                "--reload",
             ],
             "justMyCode": false,
             "env": {
