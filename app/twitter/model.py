@@ -41,6 +41,10 @@ class Twitter(BaseDocument):
     async def send_random_post(cls):
         post = await TwitterPost.random()
         accout = await cls.random()
-        res = accout.send_post(post.text)
-        await post.set({TwitterPost.sent: True})
-        return res
+        try:
+            res = accout.send_post(post.text)
+            await post.set({TwitterPost.sent: True})
+            return res
+        except Exception as e:
+            print(e)
+            return False
