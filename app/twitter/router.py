@@ -24,7 +24,7 @@ async def delete_twitter_account(id: PydanticObjectId) -> BaseResponse:
 
 @router.get("/post")
 async def get_twitter_post() -> list[TwitterPost]:
-    return await TwitterPost.find().to_list()
+    return await TwitterPost.find().limit(100).sort("-date").to_list()
 
 @router.post("/post")
 async def create_twitter_post(data: TwitterPost) -> BaseResponse:
