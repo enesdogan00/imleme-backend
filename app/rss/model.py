@@ -20,8 +20,8 @@ class RSS(BaseDocument):
         news = []
         feed = parse(self.feed_url).entries
         for post in feed:
-            post_date = datetime(*post.published_parsed[:6])
-            if last_sent.date < post_date:
+            post_date = datetime(*post.published_parsed[:6]) if hasattr(post, 'published_parsed')  else last_sent.date
+            if last_sent.date <= post_date:
                 news.append(TwitterPost(text=f"{post.title} {post.link}", website=self.feed_url, date=post_date))
         await TwitterPost.insert_many(news,)
         
