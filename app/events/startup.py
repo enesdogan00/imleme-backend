@@ -25,14 +25,14 @@ async def startup():
     app.openapi = custom_openapi
 
 @app.on_event("startup")
-@repeat_every(seconds=config("POST_INT", 60))
+@repeat_every(seconds=int(config("POST_INT", 60)))
 async def send_random_post():
     classes = [Twitter]
     for cls in classes:
         await cls.send_random_post()
 
 @app.on_event("startup")
-@repeat_every(seconds=config("POST_INT", 60))
+@repeat_every(seconds=int(config("POST_INT", 60)))
 async def rss_to_twitter():
     feeds = await RSS.find().to_list()
     for feed in feeds:

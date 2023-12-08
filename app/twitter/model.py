@@ -1,6 +1,6 @@
 from datetime import datetime
 from random import randint
-from beanie import Indexed
+from pymongo import IndexModel
 import tweepy
 
 from pydantic import  Field
@@ -9,11 +9,19 @@ from app.mixins.general import BaseDocument
 
 
 class TwitterPost(BaseDocument):
-    text: Indexed(str, unique=True) = Field(title="Tweet İçeriği", default="")
+    text: str = Field(title="Tweet İçeriği", default="")
     date: datetime|None = Field(title="Tarih", default_factory=datetime.now)
     website:str = Field(title="Website", default="")
     sent: bool = Field(title="Gönderildi mi?", default=False)
     
+    class Settings:
+        indexes = [
+             IndexModel(
+                [("text", 1)],
+                unique=True,
+            ),
+        ]
+
     @classmethod
     async def random(cls):
         count = await cls.find(cls.sent==False).count()
@@ -43,6 +51,7 @@ class Twitter(BaseDocument):
         accout = await cls.random()
         try:
             res = accout.send_post(post.text)
+            print(res)
             await post.set({TwitterPost.sent: True})
             return res
         except Exception as e:
