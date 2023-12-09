@@ -24,12 +24,14 @@ async def startup():
     await init_db()
     app.openapi = custom_openapi
 
+
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 60)))
 async def send_random_post():
     classes = [Twitter]
     for cls in classes:
         await cls.send_random_post()
+
 
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 60)))
@@ -39,4 +41,4 @@ async def rss_to_twitter():
         try:
             await feed.feed_to_twitter()
         except:
-            pass # TODO: add logging
+            pass  # TODO: add logging

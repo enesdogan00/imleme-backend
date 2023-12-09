@@ -20,9 +20,9 @@ async def init_db():
     await init_beanie(
         connection_string=config("MONGO_URI"),
         document_models=[
-         Twitter,
-         TwitterPost,
-         RSS,
+            Twitter,
+            TwitterPost,
+            RSS,
         ],
         recreate_views=True,
     )

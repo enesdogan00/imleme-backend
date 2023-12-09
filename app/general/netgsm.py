@@ -20,7 +20,9 @@ class NetGSM(BaseDocument):
 
     def post(self, url: str, data: str):
         headers = {"Content-Type": "application/xml", "Accept-Encoding": "identity"}
-        return requests.post(self.base_url + url, data=data.encode(), headers=headers, timeout=10)
+        return requests.post(
+            self.base_url + url, data=data.encode(), headers=headers, timeout=10
+        )
 
     async def send_1n_sms(self, data: OneToN) -> None:
         res = self.post(
