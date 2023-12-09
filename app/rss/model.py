@@ -1,10 +1,11 @@
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 
-from pydantic import Field
 from feedparser import parse
-from unidecode import unidecode
 from openpyxl import Workbook
+from pydantic import Field
+from unidecode import unidecode
+
 from app.general.functions import crop_text, html_2_text
 from app.mixins.general import BaseDocument
 from app.twitter.model import TwitterPost
@@ -61,8 +62,19 @@ class RSS(BaseDocument):
             ws.append(list(fields.keys()))
             now = datetime.now()
             start_time = datetime(month=now.month, year=now.year, day=1)
-            end_time = datetime(month=now.month, year=now.year, day=now.day,hour=23,minute=59,second=59)
-            for item in await cls.find(cls.website == self.feed_url, cls.sentDate >= start_time, cls.sentDate <= end_time).to_list():
+            end_time = datetime(
+                month=now.month,
+                year=now.year,
+                day=now.day,
+                hour=23,
+                minute=59,
+                second=59,
+            )
+            for item in await cls.find(
+                cls.website == self.feed_url,
+                cls.sentDate >= start_time,
+                cls.sentDate <= end_time,
+            ).to_list():
                 ws.append([getattr(item, field) for field in fields.values()])
             tmp = NamedTemporaryFile(delete=False)
             wb.save(tmp.name)

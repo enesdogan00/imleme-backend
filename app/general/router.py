@@ -1,6 +1,7 @@
 from urllib.parse import urlparse
+
 from fastapi import APIRouter
-from fastapi.responses import RedirectResponse, PlainTextResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse
 
 from app.twitter.model import TwitterPost
 

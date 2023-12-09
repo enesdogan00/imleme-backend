@@ -1,6 +1,6 @@
 from random import randint
-from beanie import Document
 
+from beanie import Document
 
 
 class BaseDocument(Document):

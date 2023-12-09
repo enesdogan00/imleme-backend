@@ -5,8 +5,8 @@ from beanie import init_beanie
 from decouple import config
 from fastapi_jwt import JwtAccessBearer
 
-from app.twitter.model import Twitter, TwitterPost
 from app.rss.model import RSS
+from app.twitter.model import Twitter, TwitterPost
 
 access_security = JwtAccessBearer(
     secret_key=token_urlsafe(32),

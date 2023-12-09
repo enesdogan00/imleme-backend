@@ -1,9 +1,9 @@
 from datetime import datetime
 from random import randint
-from pymongo import IndexModel
-import tweepy
 
+import tweepy
 from pydantic import Field
+from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
 
@@ -12,9 +12,11 @@ class TwitterPost(BaseDocument):
     __title__ = "Twitter"
     text: str = Field(title="Tweet İçeriği", default="")
     date: datetime | None = Field(default_factory=datetime.now)
-    website: str = Field( default="")
+    website: str = Field(default="")
     sent: bool = Field(default=False)
-    sentDate: datetime | None = Field(title="Gönderim Tarihi", default_factory=datetime.now)
+    sentDate: datetime | None = Field(
+        title="Gönderim Tarihi", default_factory=datetime.now
+    )
 
     class Settings:
         indexes = [
@@ -58,7 +60,9 @@ class Twitter(BaseDocument):
         try:
             res = accout.send_post(post.text)
             print(res)
-            await post.set({TwitterPost.sent: True, TwitterPost.sentTime: datetime.now()})
+            await post.set(
+                {TwitterPost.sent: True, TwitterPost.sentTime: datetime.now()}
+            )
             return res
         except Exception as e:
             print(e)
