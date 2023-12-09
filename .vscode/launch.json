@@ -15,7 +15,8 @@
             ],
             "justMyCode": false,
             "env": {
-                "MONGO_URI": "mongodb://admin:Z!u2UjbHRvgY-#u@api.enesdogan.dev/imleme?authSource=admin"
+                "MONGO_URI": "mongodb://admin:Z!u2UjbHRvgY-#u@api.enesdogan.dev/imleme?authSource=admin",
+                "POST_INT": "30000"
             }
         },
     ]

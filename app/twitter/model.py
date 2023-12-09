@@ -9,10 +9,12 @@ from app.mixins.general import BaseDocument
 
 
 class TwitterPost(BaseDocument):
+    __title__ = "Twitter"
     text: str = Field(title="Tweet İçeriği", default="")
-    date: datetime | None = Field(title="Tarih", default_factory=datetime.now)
-    website: str = Field(title="Website", default="")
-    sent: bool = Field(title="Gönderildi mi?", default=False)
+    date: datetime | None = Field(default_factory=datetime.now)
+    website: str = Field( default="")
+    sent: bool = Field(default=False)
+    sentDate: datetime | None = Field(title="Gönderim Tarihi", default_factory=datetime.now)
 
     class Settings:
         indexes = [
@@ -56,7 +58,7 @@ class Twitter(BaseDocument):
         try:
             res = accout.send_post(post.text)
             print(res)
-            await post.set({TwitterPost.sent: True})
+            await post.set({TwitterPost.sent: True, TwitterPost.sentTime: datetime.now()})
             return res
         except Exception as e:
             print(e)

@@ -2,6 +2,7 @@ from random import randint
 from beanie import Document
 
 
+
 class BaseDocument(Document):
     @classmethod
     async def random(cls):

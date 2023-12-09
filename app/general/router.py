@@ -1,6 +1,6 @@
 from urllib.parse import urlparse
 from fastapi import APIRouter
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, PlainTextResponse
 
 from app.twitter.model import TwitterPost
 
@@ -15,7 +15,7 @@ async def redirect_to_docs():
 
 
 @router.get("/dashboard")
-async def dashboard() -> str:
+async def dashboard() -> PlainTextResponse:
     pipeline = [
         {"$match": {"sent": True}},
         {"$group": {"_id": "$website", "count": {"$sum": 1}}},
@@ -27,4 +27,4 @@ async def dashboard() -> str:
             for idx, site in enumerate(sites, 1)
         ]
     )
-    return res
+    return PlainTextResponse(res)
