@@ -33,13 +33,14 @@ class RSS(BaseDocument):
                 else last_sent.date
             )
             if last_sent.date <= post_date:
+                tag = f"#{unidecode(post.title).replace(' ','')}"
                 if post.description:
                     desc = html_2_text(post.description)
                     desc = html_2_text(desc).replace("\n", " ")
-                    desc = crop_text(desc, 280 - len(desc) - len(post.link))
+                    desc = crop_text(desc, 280 - len(desc) - len(post.link) - len(tag) - 10)
                 else:
                     desc = ""
-                text = f"{post.title} {desc} {post.link} #{unidecode(post.title).replace(' ','')}"
+                text = f"{post.title} {desc} {post.link} {tag}"
                 news.append(
                     TwitterPost(text=text, website=self.feed_url, date=post_date, blogURL=post.link)
                 )
@@ -74,6 +75,7 @@ class RSS(BaseDocument):
                 cls.website == self.feed_url,
                 cls.sentDate >= start_time,
                 cls.sentDate <= end_time,
+                cls.sent == True,
             ).to_list():
                 ws.append([getattr(item, field) for field in fields.values()])
             tmp = NamedTemporaryFile(delete=False)

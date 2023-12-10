@@ -63,7 +63,7 @@ class Twitter(BaseDocument):
             res = accout.send_post(post.text)
             print(res)
             await post.set(
-                {TwitterPost.sent: True, TwitterPost.sentTime: datetime.now(), TwitterPost.sentURL: f'https://twitter.com/anyuser/status/{res.data["id"]}'}
+                {TwitterPost.sent: True, TwitterPost.sentDate: datetime.now(), TwitterPost.sentURL: f'https://twitter.com/anyuser/status/{res.data["id"]}'}
             )
             return res
         except Exception as e:
