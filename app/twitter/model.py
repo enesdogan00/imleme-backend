@@ -17,6 +17,8 @@ class TwitterPost(BaseDocument):
     sentDate: datetime | None = Field(
         title="Gönderim Tarihi", default_factory=datetime.now
     )
+    sentURL: str | None = Field(default="", title="Gönderi Adresi")
+    blogURL: str | None = Field(default="", title="Blog Adresi")
 
     class Settings:
         indexes = [
@@ -61,7 +63,7 @@ class Twitter(BaseDocument):
             res = accout.send_post(post.text)
             print(res)
             await post.set(
-                {TwitterPost.sent: True, TwitterPost.sentTime: datetime.now()}
+                {TwitterPost.sent: True, TwitterPost.sentTime: datetime.now(), TwitterPost.sentURL: f'https://twitter.com/anyuser/status/{res.data["id"]}'}
             )
             return res
         except Exception as e:

@@ -41,7 +41,7 @@ class RSS(BaseDocument):
                     desc = ""
                 text = f"{post.title} {desc} {post.link} #{unidecode(post.title).replace(' ','')}"
                 news.append(
-                    TwitterPost(text=text, website=self.feed_url, date=post_date)
+                    TwitterPost(text=text, website=self.feed_url, date=post_date, blogURL=post.link)
                 )
         await TwitterPost.insert_many(
             news,
