@@ -27,7 +27,7 @@ async def startup():
 
 
 @app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 60)))
+@repeat_every(seconds=int(config("POST_INT", 120)))
 async def send_random_post():
     classes = [Twitter]
     for cls in classes:
@@ -35,7 +35,7 @@ async def send_random_post():
 
 
 @app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 60)))
+@repeat_every(seconds=int(config("POST_INT", 120)))
 async def rss_to_twitter():
     feeds = await RSS.find().to_list()
     for feed in feeds:
