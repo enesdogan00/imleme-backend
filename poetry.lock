@@ -462,9 +462,9 @@ selenium = "^4.16.0"
 
 [package.source]
 type = "git"
-url = "git@gitlab.com:imleme/folkd_post.git"
+url = "https://gitlab.com/enesdogan00/folkd_post.git"
 reference = "HEAD"
-resolved_reference = "98dada80b2db6cc6e1293b01115b296ada80d3f3"
+resolved_reference = "d1c05bcb6be7c6eb50fb6e3ec51ab1618be4750b"
 
 [[package]]
 name = "greenlet"
@@ -1441,4 +1441,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "61f4583dd56fe1060fa1fb6d7517950cff4af45a32546d90d45bc79243d29c2b"
+content-hash = "546eae53bff4632e45b15d14fb7d5268f107d52fd26e680e0c6e3ac50d747ea7"
