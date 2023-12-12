@@ -43,3 +43,14 @@ async def rss_to_twitter():
             await feed.feed_to_twitter()
         except:
             pass  # TODO: add logging
+
+@app.on_event("startup")
+@repeat_every(seconds=int(config("POST_INT", 120)))
+async def rss_to_folkd():
+    feeds = await RSS.find().to_list()
+    for feed in feeds:
+        try:
+            await feed.feed_to_folkd()
+        except Exception as e:
+            
+            pass

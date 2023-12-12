@@ -5,6 +5,7 @@ from feedparser import parse
 from openpyxl import Workbook
 from pydantic import Field
 from unidecode import unidecode
+from app.folkd.model import FolkdPost
 
 from app.general.functions import crop_text, html_2_text
 from app.mixins.general import BaseDocument
@@ -45,6 +46,40 @@ class RSS(BaseDocument):
                     TwitterPost(text=text, website=self.feed_url, date=post_date, blogURL=post.link)
                 )
         await TwitterPost.insert_many(
+            news,
+        )
+
+    async def feed_to_folkd(self):
+        last_sent = (
+            await FolkdPost.find(FolkdPost.website == self.feed_url)
+            .sort("-date")
+            .to_list(1)
+        )
+        last_sent = (
+            last_sent[0] if last_sent else FolkdPost(date=datetime(2021, 1, 1))
+        )
+        news = []
+        feed = parse(self.feed_url).entries
+        default_tags = FolkdPost.model_fields['tags'].default
+        for post in feed:
+            post_date = (
+                datetime(*post.published_parsed[:6])
+                if hasattr(post, "published_parsed")
+                else last_sent.date
+            )
+            if last_sent.date <= post_date:
+                tag = f"{unidecode(post.title).replace(' ','')}"
+                if post.description:
+                    desc = html_2_text(post.description)
+                    desc = html_2_text(desc).replace("\n", " ")
+                    desc = crop_text(desc, 300 - len(desc) - len(post.link) - len(tag))
+                else:
+                    desc = ""
+                
+                news.append(
+                    FolkdPost(title=post.title, desc=desc, tags=[tag, *default_tags], website=self.feed_url, date=post_date, blogURL=post.link)
+                )
+        await FolkdPost.insert_many(
             news,
         )
 

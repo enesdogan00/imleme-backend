@@ -7,6 +7,7 @@ from fastapi_jwt import JwtAccessBearer
 
 from app.rss.model import RSS
 from app.twitter.model import Twitter, TwitterPost
+from app.folkd.model import Folkd, FolkdPost
 
 access_security = JwtAccessBearer(
     secret_key=token_urlsafe(32),
@@ -23,6 +24,8 @@ async def init_db():
             Twitter,
             TwitterPost,
             RSS,
+            Folkd,
+            FolkdPost,
         ],
         recreate_views=True,
     )
