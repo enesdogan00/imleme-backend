@@ -1,7 +1,9 @@
 from datetime import datetime
 from random import randint
+from traceback import format_exc
 
-from folkd import Folkd as FolkdClient, Post
+from folkd import Folkd as FolkdClient
+from folkd import Post
 from pydantic import Field
 from pymongo import IndexModel
 
@@ -48,7 +50,14 @@ class Folkd(BaseDocument):
     password: str = Field(title="Password")
 
     def send_post(self, text: str):
-        client = FolkdClient(self.email,self.password)
+        try:
+            client = FolkdClient(self.email,self.password, headless=True)
+        except Exception as e:
+            print(e)
+            st = format_exc()
+            print(st)
+            return False
+
         return client.send_post(text)
 
     @classmethod
@@ -56,19 +65,20 @@ class Folkd(BaseDocument):
         post = await FolkdPost.random()
         accout = await cls.random()
         try:
-            post = Post(
+            details = Post(
                 url=post.blogURL,
                 title=post.title,
                 desc=post.desc,
                 tags=post.tags
             )
-            res = accout.send_post(post)
-            print(res)
-            await post.set(
-                #TODO: add sent url
-                {FolkdPost.sent: True, FolkdPost.sentDate: datetime.now(), FolkdPost.sentAccout: accout.name}
-            )
-            return res
+            res = accout.send_post(details)
+            if res:
+                await post.set(
+                    {FolkdPost.sent: True, FolkdPost.sentDate: datetime.now(), FolkdPost.sentAccout: accout.name, FolkdPost.sentURL: res}
+                )
+                return res
         except Exception as e:
             print(e)
+            st = format_exc()
+            print(st)
             return False

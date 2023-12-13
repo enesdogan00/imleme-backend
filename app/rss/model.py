@@ -5,8 +5,8 @@ from feedparser import parse
 from openpyxl import Workbook
 from pydantic import Field
 from unidecode import unidecode
-from app.folkd.model import FolkdPost
 
+from app.folkd.model import FolkdPost
 from app.general.functions import crop_text, html_2_text
 from app.mixins.general import BaseDocument
 from app.twitter.model import TwitterPost

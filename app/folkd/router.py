@@ -1,9 +1,9 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter
 
+from app.folkd.model import Folkd, FolkdPost
 from app.general.constants import Success
 from app.general.model import BaseResponse
-from app.folkd.model import Folkd, FolkdPost
 
 router = APIRouter()
 
@@ -18,10 +18,6 @@ async def create_folkd_account(data: Folkd) -> BaseResponse:
     await data.save()
     return BaseResponse(data=data, message=Success.created)
 
-@router.put("/test")
-async def feed_to_folkd(data: Folkd) -> BaseResponse:
-    
-    return BaseResponse(data=data, message=Success.created)
 
 @router.delete("/account/{id}")
 async def delete_folkd_account(id: PydanticObjectId) -> BaseResponse:
