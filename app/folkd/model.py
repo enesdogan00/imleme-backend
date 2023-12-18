@@ -49,7 +49,7 @@ class Folkd(BaseDocument):
     email: str = Field(title="Email")
     password: str = Field(title="Password")
 
-    def send_post(self, text: str):
+    def send_post(self, details: Post):
         try:
             client = FolkdClient(self.email,self.password, headless=True)
         except Exception as e:
@@ -58,7 +58,7 @@ class Folkd(BaseDocument):
             print(st)
             return False
 
-        return client.send_post(text)
+        return client.send_post(details)
 
     @classmethod
     async def send_random_post(cls):
