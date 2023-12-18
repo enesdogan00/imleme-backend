@@ -6,6 +6,7 @@ from decouple import config
 from fastapi_jwt import JwtAccessBearer
 
 from app.folkd.model import Folkd, FolkdPost
+from app.medium.model import Medium, MediumPost
 from app.rss.model import RSS
 from app.twitter.model import Twitter, TwitterPost
 
@@ -26,6 +27,8 @@ async def init_db():
             RSS,
             Folkd,
             FolkdPost,
+            Medium,
+            MediumPost,
         ],
         recreate_views=True,
     )

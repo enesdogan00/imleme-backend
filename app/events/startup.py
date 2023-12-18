@@ -57,3 +57,13 @@ async def rss_to_folkd():
             await feed.feed_to_folkd()
         except Exception as e:
             pass
+
+@app.on_event("startup")
+@repeat_every(seconds=int(config("POST_INT", 120)))
+async def rss_to_medium():
+    feeds = await RSS.find().to_list()
+    for feed in feeds:
+        try:
+            await feed.feed_to_medium()
+        except Exception as e:
+            pass
