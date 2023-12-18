@@ -5,6 +5,7 @@ from fastapi_utilities import repeat_every
 from app.app import app
 from app.database import init_db
 from app.folkd.model import Folkd
+from app.medium.model import Medium
 from app.rss.model import RSS
 from app.twitter.model import Twitter
 
@@ -30,7 +31,7 @@ async def startup():
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
 async def send_random_post():
-    classes = [Twitter, Folkd]
+    classes = [Twitter, Folkd, Medium]
     for cls in classes:
         try:
             await cls.send_random_post()
