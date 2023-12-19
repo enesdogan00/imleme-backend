@@ -119,7 +119,7 @@ class RSS(BaseDocument):
         )
 
     async def excel_report(self):
-        classes = [TwitterPost]
+        classes = [TwitterPost, FolkdPost, MediumPost]
         wb = Workbook()
         ws = wb.active
         wb.remove(ws)
@@ -147,7 +147,8 @@ class RSS(BaseDocument):
                 cls.sentDate <= end_time,
                 cls.sent == True,
             ).to_list():
+                print(item)
                 ws.append([getattr(item, field) for field in fields.values()])
             tmp = NamedTemporaryFile(delete=False)
-            wb.save(tmp.name)
-            return tmp
+        wb.save(tmp.name)
+        return tmp
