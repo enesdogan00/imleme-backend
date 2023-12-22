@@ -28,43 +28,43 @@ async def startup():
     app.openapi = custom_openapi
 
 
-@app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 120)))
-async def send_random_post():
-    classes = [Twitter, Folkd, Medium]
-    for cls in classes:
-        try:
-            await cls.send_random_post()
-        except Exception as e:
-            print(e)
+# @app.on_event("startup")
+# @repeat_every(seconds=int(config("POST_INT", 120)))
+# async def send_random_post():
+#     classes = [Twitter, Folkd, Medium]
+#     for cls in classes:
+#         try:
+#             await cls.send_random_post()
+#         except Exception as e:
+#             print(e)
 
 
-@app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 120)))
-async def rss_to_twitter():
-    feeds = await RSS.find().to_list()
-    for feed in feeds:
-        try:
-            await feed.feed_to_twitter()
-        except:
-            pass  # TODO: add logging
+# @app.on_event("startup")
+# @repeat_every(seconds=int(config("POST_INT", 120)))
+# async def rss_to_twitter():
+#     feeds = await RSS.find().to_list()
+#     for feed in feeds:
+#         try:
+#             await feed.feed_to_twitter()
+#         except:
+#             pass  # TODO: add logging
 
-@app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 120)))
-async def rss_to_folkd():
-    feeds = await RSS.find().to_list()
-    for feed in feeds:
-        try:
-            await feed.feed_to_folkd()
-        except Exception as e:
-            pass
+# @app.on_event("startup")
+# @repeat_every(seconds=int(config("POST_INT", 120)))
+# async def rss_to_folkd():
+#     feeds = await RSS.find().to_list()
+#     for feed in feeds:
+#         try:
+#             await feed.feed_to_folkd()
+#         except Exception as e:
+#             pass
 
-@app.on_event("startup")
-@repeat_every(seconds=int(config("POST_INT", 120)))
-async def rss_to_medium():
-    feeds = await RSS.find().to_list()
-    for feed in feeds:
-        try:
-            await feed.feed_to_medium()
-        except Exception as e:
-            pass
+# @app.on_event("startup")
+# @repeat_every(seconds=int(config("POST_INT", 120)))
+# async def rss_to_medium():
+#     feeds = await RSS.find().to_list()
+#     for feed in feeds:
+#         try:
+#             await feed.feed_to_medium()
+#         except Exception as e:
+#             pass
