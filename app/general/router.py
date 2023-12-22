@@ -29,7 +29,7 @@ async def dashboard() -> PlainTextResponse:
     
         res += "\n".join(
             [
-                f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet Twitter post gönderildi."
+                f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet {cls.__title__} post gönderildi."
                 for idx, site in enumerate(sites, 1)
             ]
         )
