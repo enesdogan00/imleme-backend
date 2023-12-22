@@ -15,8 +15,8 @@
             ],
             "justMyCode": false,
             "env": {
-                "MONGO_URI": "mongodb://imleme-user:Z!u2UjbHRvgY-#u@api.enesdogan.dev:3691/imleme",
-                "POST_INT": "30000"
+                "MONGO_URI": "mongodb://imleme-user:Z!u2UjbHRvgY-#u@api.enesdogan.dev:3691/imleme_dev",
+                "POST_INT": "30"
             }
         },
     ]
