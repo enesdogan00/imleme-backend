@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import randint
+from traceback import format_exc
 
 import tweepy
 from pydantic import Field
@@ -69,4 +70,6 @@ class Twitter(BaseDocument):
             return res
         except Exception as e:
             print(e)
+            st = format_exc()
+            print(st)
             return False
