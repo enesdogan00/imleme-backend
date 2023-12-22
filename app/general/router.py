@@ -24,14 +24,16 @@ async def dashboard() -> PlainTextResponse:
         {"$group": {"_id": "$website", "count": {"$sum": 1}}},
     ]
     res = ""
+    start_val = 1
     for cls in [TwitterPost, FolkdPost, MediumPost]:
         sites = await cls.aggregate(pipeline).to_list()
     
         res += "\n".join(
             [
                 f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet {cls.__title__} post gönderildi."
-                for idx, site in enumerate(sites, 1)
+                for idx, site in enumerate(sites, start_val)
             ]
         )
+        start_val += len(sites)
         res += "\n"
     return PlainTextResponse(res)
