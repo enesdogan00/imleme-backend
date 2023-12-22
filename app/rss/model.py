@@ -24,7 +24,7 @@ class RSS(BaseDocument):
             .to_list(1)
         )
         last_sent = (
-            last_sent[0] if last_sent else TwitterPost(date=datetime(2021, 1, 1))
+            last_sent[0] if last_sent else TwitterPost(date=datetime.now())
         )
         news = []
         feed = parse(self.feed_url).entries
@@ -57,7 +57,7 @@ class RSS(BaseDocument):
             .to_list(1)
         )
         last_sent = (
-            last_sent[0] if last_sent else FolkdPost(date=datetime(2021, 1, 1))
+            last_sent[0] if last_sent else FolkdPost(date=datetime.now())
         )
         news = []
         feed = parse(self.feed_url).entries
@@ -91,7 +91,7 @@ class RSS(BaseDocument):
             .to_list(1)
         )
         last_sent = (
-            last_sent[0] if last_sent else MediumPost(date=datetime(2021, 1, 1))
+            last_sent[0] if last_sent else MediumPost(date=datetime.now())
         )
         news = []
         feed = parse(self.feed_url).entries
