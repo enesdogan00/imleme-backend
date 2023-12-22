@@ -33,4 +33,5 @@ async def dashboard() -> PlainTextResponse:
                 for idx, site in enumerate(sites, 1)
             ]
         )
+        res += "\n"
     return PlainTextResponse(res)
