@@ -4,6 +4,8 @@ from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse, RedirectResponse
 
 from app.twitter.model import TwitterPost
+from app.folkd.model import FolkdPost
+from app.medium.model import MediumPost
 
 router = APIRouter()
 
@@ -21,11 +23,14 @@ async def dashboard() -> PlainTextResponse:
         {"$match": {"sent": True}},
         {"$group": {"_id": "$website", "count": {"$sum": 1}}},
     ]
-    sites = await TwitterPost.aggregate(pipeline).to_list()
-    res = "\n".join(
-        [
-            f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet Twitter post gönderildi."
-            for idx, site in enumerate(sites, 1)
-        ]
-    )
+    res = ""
+    for cls in [TwitterPost, FolkdPost, MediumPost]:
+        sites = await cls.aggregate(pipeline).to_list()
+    
+        res += "\n".join(
+            [
+                f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet Twitter post gönderildi."
+                for idx, site in enumerate(sites, 1)
+            ]
+        )
     return PlainTextResponse(res)
