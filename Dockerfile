@@ -14,7 +14,7 @@ WORKDIR /code
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
-RUN apk add chromium chromium-chromedriver git && pip install --no-cache-dir --upgrade -r /code/requirements.txt 
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" > /etc/apk/repositories; echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories; apk update && apk add chromium chromium-chromedriver git && pip install --no-cache-dir --upgrade -r /code/requirements.txt 
 
 COPY ./app ./app
 
