@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 
 from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse, RedirectResponse
+from app.rss.model import RSS
 
 from app.twitter.model import TwitterPost
 from app.folkd.model import FolkdPost
@@ -27,13 +28,9 @@ async def dashboard() -> PlainTextResponse:
     start_val = 1
     for cls in [TwitterPost, FolkdPost, MediumPost]:
         sites = await cls.aggregate(pipeline).to_list()
-    
-        res += "\n".join(
-            [
-                f"{idx}. {urlparse(site['_id']).netloc} {site['count']} adet {cls.__title__} post gönderildi."
-                for idx, site in enumerate(sites, start_val)
-            ]
-        )
+        for idx, site in enumerate(sites, start_val):
+            feed = await RSS.get(site["_id"].id)                
+            res += f"{idx}. {urlparse(feed.feed_url).netloc} {site['count']} adet {cls.__title__} post gönderildi." + "\n"
+        
         start_val += len(sites)
-        res += "\n"
     return PlainTextResponse(res)
