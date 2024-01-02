@@ -58,7 +58,9 @@ class Folkd(BaseDocument):
             print(st)
             return False
 
-        return client.send_post(details)
+        res = client.send_post(details)
+        client.driver.close()
+        return res
 
     @classmethod
     async def send_random_post(cls):
