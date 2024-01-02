@@ -6,20 +6,19 @@ from openpyxl import Workbook
 from pydantic import Field
 from unidecode import unidecode
 
-from app.medium.model import MediumPost
-from app.folkd.model import FolkdPost
 from app.general.functions import crop_text, html_2_text
 from app.mixins.general import BaseDocument
-from app.twitter.model import TwitterPost
 
 
 class RSS(BaseDocument):
     active: bool = Field(title="Aktif", default=True)
     feed_url: str | None = Field(title="RSS URL", default="")
+    daily_count: int = Field(title="Günlük Gönderi Sayısı", default=10)
 
     async def feed_to_twitter(self):
+        from app.twitter.model import TwitterPost
         last_sent = (
-            await TwitterPost.find(TwitterPost.website == self.feed_url)
+            await TwitterPost.find(TwitterPost.rss_id.id == self.id)
             .sort("-date")
             .to_list(1)
         )
@@ -44,15 +43,16 @@ class RSS(BaseDocument):
                     desc = ""
                 text = f"{post.title} {desc} {post.link} {tag}"
                 news.append(
-                    TwitterPost(text=text, website=self.feed_url, date=post_date, blogURL=post.link)
+                    TwitterPost(text=text, rss_id=self, date=post_date, blogURL=post.link)
                 )
         await TwitterPost.insert_many(
             news,
         )
 
     async def feed_to_folkd(self):
+        from app.folkd.model import FolkdPost
         last_sent = (
-            await FolkdPost.find(FolkdPost.website == self.feed_url)
+            await FolkdPost.find(FolkdPost.rss_id.id == self.id)
             .sort("-date")
             .to_list(1)
         )
@@ -78,15 +78,16 @@ class RSS(BaseDocument):
                     desc = ""
                 
                 news.append(
-                    FolkdPost(title=post.title, desc=desc, tags=[tag, *default_tags], website=self.feed_url, date=post_date, blogURL=post.link)
+                    FolkdPost(title=post.title, desc=desc, tags=[tag, *default_tags], rss_id=self, date=post_date, blogURL=post.link)
                 )
         await FolkdPost.insert_many(
             news,
         )
 
     async def feed_to_medium(self):
+        from app.medium.model import MediumPost
         last_sent = (
-            await MediumPost.find(MediumPost.website == self.feed_url)
+            await MediumPost.find(MediumPost.rss_id.id == self.id)
             .sort("-date")
             .to_list(1)
         )
@@ -112,13 +113,16 @@ class RSS(BaseDocument):
                     desc = ""
                 
                 news.append(
-                    MediumPost(title=post.title, desc=desc, tags=[tag, *default_tags], website=self.feed_url, date=post_date, blogURL=post.link)
+                    MediumPost(title=post.title, desc=desc, tags=[tag, *default_tags], rss_id=self, date=post_date, blogURL=post.link)
                 )
         await MediumPost.insert_many(
             news,
         )
 
     async def excel_report(self):
+        from app.twitter.model import TwitterPost
+        from app.folkd.model import FolkdPost
+        from app.medium.model import MediumPost
         classes = [TwitterPost, FolkdPost, MediumPost]
         wb = Workbook()
         ws = wb.active
@@ -142,7 +146,7 @@ class RSS(BaseDocument):
                 second=59,
             )
             for item in await cls.find(
-                cls.website == self.feed_url,
+                cls.rss_id.id == self.id,
                 cls.sentDate >= start_time,
                 cls.sentDate <= end_time,
                 cls.sent == True,

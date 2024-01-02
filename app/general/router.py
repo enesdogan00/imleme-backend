@@ -21,7 +21,7 @@ async def redirect_to_docs():
 async def dashboard() -> PlainTextResponse:
     pipeline = [
         {"$match": {"sent": True}},
-        {"$group": {"_id": "$website", "count": {"$sum": 1}}},
+        {"$group": {"_id": "$rss_id", "count": {"$sum": 1}}},
     ]
     res = ""
     start_val = 1

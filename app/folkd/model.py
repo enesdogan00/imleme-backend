@@ -8,16 +8,16 @@ from pydantic import Field
 from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
+from app.mixins.posts import PostMixin
 
 
-class FolkdPost(BaseDocument):
+class FolkdPost(PostMixin, BaseDocument):
     __title__ = "Folkd"
     blogURL: str | None = Field(default="", title="Blog Adresi")
     title: str = ""
     desc: str = ""
     tags: list[str] = Field(default=["Reklam", "Blog"],min_length=3)
     date: datetime | None = Field(default_factory=datetime.now)
-    website: str = Field(default="")
     sent: bool = Field(default=False)
     sentDate: datetime | None = Field(
         title="Gönderim Tarihi", default_factory=datetime.now
@@ -33,14 +33,7 @@ class FolkdPost(BaseDocument):
             ),
         ]
 
-    @classmethod
-    async def random(cls):
-        count = await cls.find(cls.sent == False).count()
-        random_index = randint(0, count - 1)
-        random_document = (
-            await cls.find(cls.sent == False).skip(random_index).limit(1).to_list(1)
-        )
-        return random_document[0]
+    
 
 
 class Folkd(BaseDocument):
