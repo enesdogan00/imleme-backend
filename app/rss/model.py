@@ -38,7 +38,7 @@ class RSS(BaseDocument):
                 if post.description:
                     desc = html_2_text(post.description)
                     desc = html_2_text(desc).replace("\n", " ")
-                    desc = crop_text(desc, 280 - len(desc) - len(post.link) - len(tag) - 10)
+                    desc = crop_text(desc, 280 - len(desc) - len(post.link) - len(tag) - 30)
                 else:
                     desc = ""
                 text = f"{post.title} {desc} {post.link} {tag}"
