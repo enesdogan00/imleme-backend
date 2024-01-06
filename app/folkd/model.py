@@ -25,14 +25,6 @@ class FolkdPost(PostMixin, BaseDocument):
     sentURL: str | None = Field(default="", title="Gönderi Adresi")
     sentAccout: str | None = Field(default="", title="Gönderen Hesap")
 
-    class Settings:
-        indexes = [
-            IndexModel(
-                [("blogURL", 1)],
-                unique=True,
-            ),
-        ]
-
     
 
 
@@ -50,9 +42,10 @@ class Folkd(BaseDocument):
             st = format_exc()
             print(st)
             return False
+        finally:
+            client.driver.quit()
 
         res = client.send_post(details)
-        client.driver.close()
         return res
 
     @classmethod
