@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from app.rss.model import RSS
 
 class PostMixin(BaseModel):
-    rss_id: Link[RSS]
+    rss_id: Link[RSS] = None
     @classmethod
     async def random(cls):
         count = await cls.find(cls.sent == False).count()
