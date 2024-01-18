@@ -1,3 +1,4 @@
+from traceback import format_exc
 from decouple import config
 from fastapi.openapi.utils import get_openapi
 from fastapi_utilities import repeat_every
@@ -36,6 +37,8 @@ async def send_random_post():
         try:
             await cls.send_random_post()
         except Exception as e:
+            st = format_exc()
+            print(st)
             print(e)
 
 
@@ -47,7 +50,8 @@ async def rss_to_twitter():
         try:
             await feed.feed_to_twitter()
         except:
-            pass  # TODO: add logging
+            st = format_exc()
+            print(st)
 
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
@@ -57,7 +61,8 @@ async def rss_to_folkd():
         try:
             await feed.feed_to_folkd()
         except Exception as e:
-            pass
+            st = format_exc()
+            print(st)
 
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
@@ -67,4 +72,5 @@ async def rss_to_medium():
         try:
             await feed.feed_to_medium()
         except Exception as e:
-            pass
+            st = format_exc()
+            print(st)
