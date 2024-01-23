@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
 from fastapi import APIRouter
@@ -21,7 +22,7 @@ async def redirect_to_docs():
 @router.get("/dashboard")
 async def dashboard() -> PlainTextResponse:
     pipeline = [
-        {"$match": {"sent": True}},
+        {"$match": {"sent": True, "sentDate": {"$gte": datetime.now().replace(hour=0, minute=0, second=0) - timedelta(days=1)}}},
         {"$group": {"_id": "$rss_id", "count": {"$sum": 1}}},
     ]
     res = ""
