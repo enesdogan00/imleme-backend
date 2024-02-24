@@ -25,6 +25,13 @@ class FolkdPost(PostMixin, BaseDocument):
     sentURL: str | None = Field(default="", title="Gönderi Adresi")
     sentAccout: str | None = Field(default="", title="Gönderen Hesap")
 
+    class Settings:
+        indexes = [
+            IndexModel(
+                [("blogURL", 1)],
+                unique=True,
+            ),
+        ]
     
 
 
@@ -52,6 +59,8 @@ class Folkd(BaseDocument):
     async def send_random_post(cls):
         post = await FolkdPost.random()
         accout = await cls.random()
+        if not accout:
+            return False
         try:
             details = Post(
                 url=post.blogURL,

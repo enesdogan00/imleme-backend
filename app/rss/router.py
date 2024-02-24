@@ -28,7 +28,7 @@ async def create_rss_feed(data: RSS) -> BaseResponse:
 
 @router.post("/multiple")
 async def create_rss_feed_multiple(data: list[str]) -> BaseResponse:
-    await RSS.insert_many(RSS(feed_url=url) for url in data)
+    await RSS.insert_many([RSS(feed_url=url) for url in data], ordered=False)
     return BaseResponse(data=data, message=Success.created)
 
 

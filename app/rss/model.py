@@ -46,7 +46,7 @@ class RSS(BaseDocument):
                     TwitterPost(text=text, rss_id=self, date=post_date, blogURL=post.link)
                 )
         await TwitterPost.insert_many(
-            news,
+            news, ordered=False
         )
 
     async def feed_to_folkd(self):
@@ -81,7 +81,7 @@ class RSS(BaseDocument):
                     FolkdPost(title=post.title, desc=desc, tags=[tag, *default_tags], rss_id=self, date=post_date, blogURL=post.link)
                 )
         await FolkdPost.insert_many(
-            news,
+            news, ordered=False
         )
 
     async def feed_to_medium(self):
@@ -116,7 +116,7 @@ class RSS(BaseDocument):
                     MediumPost(title=post.title, desc=desc, tags=[tag, *default_tags], rss_id=self, date=post_date, blogURL=post.link)
                 )
         await MediumPost.insert_many(
-            news,
+            news, ordered=False
         )
 
     async def excel_report(self):

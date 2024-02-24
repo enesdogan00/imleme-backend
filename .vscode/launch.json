@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: FastAPI",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",
             "args": [
@@ -15,7 +15,7 @@
             ],
             "justMyCode": false,
             "env": {
-                "MONGO_URI": "mongodb://imleme-user:Z!u2UjbHRvgY-#u@api.enesdogan.dev:3691/imleme_test",
+                "MONGO_URI": "mongodb://localhost:27017/imleme-ali",
                 "POST_INT": "30"
             }
         },

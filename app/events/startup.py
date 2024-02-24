@@ -49,7 +49,9 @@ async def rss_to_twitter():
     for feed in feeds:
         try:
             await feed.feed_to_twitter()
-        except:
+        except Exception as e:
+            if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
+                return
             st = format_exc()
             print(st)
 
@@ -61,6 +63,8 @@ async def rss_to_folkd():
         try:
             await feed.feed_to_folkd()
         except Exception as e:
+            if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
+                return
             st = format_exc()
             print(st)
 
@@ -72,5 +76,7 @@ async def rss_to_medium():
         try:
             await feed.feed_to_medium()
         except Exception as e:
+            if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
+                return
             st = format_exc()
             print(st)

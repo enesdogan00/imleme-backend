@@ -70,6 +70,8 @@ class Medium(BaseDocument):
     async def send_random_post(cls):
         post = await MediumPost.random()
         accout = await cls.random()
+        if not accout:
+            return False
         try:
             res = accout.send_post(post)
             print(res)

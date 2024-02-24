@@ -54,6 +54,8 @@ class Twitter(BaseDocument):
     async def send_random_post(cls):
         post = await TwitterPost.random()
         accout = await cls.random()
+        if not accout:
+            return False
         try:
             res = accout.send_post(post.text)
             print(res)
