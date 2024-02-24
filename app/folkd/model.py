@@ -44,15 +44,14 @@ class Folkd(BaseDocument):
     def send_post(self, details: Post):
         try:
             client = FolkdClient(self.email,self.password, headless=True)
+            res = client.send_post(details)
+            client.driver.quit()
         except Exception as e:
             print(e)
             st = format_exc()
             print(st)
             return False
-        finally:
-            client.driver.quit()
-
-        res = client.send_post(details)
+            
         return res
 
     @classmethod
