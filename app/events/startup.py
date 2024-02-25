@@ -33,7 +33,7 @@ async def startup():
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
 async def send_random_post():
-    classes = [Twitter, Folkd, Medium]
+    classes = [Twitter, Medium, Folkd]
     for cls in classes:
         try:
             await cls.send_random_post()

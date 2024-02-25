@@ -61,9 +61,13 @@ class Twitter(BaseDocument):
             res = accout.send_post(post.text)
             logger.info('Twitter Post Reult:')
             logger.info(res)
+            sent_url = f'https://twitter.com/{accout.name}/status/{res.data["id"]}'
             await post.set(
-                {TwitterPost.sent: True, TwitterPost.sentDate: datetime.now(), TwitterPost.sentURL: f'https://twitter.com/{accout.name}/status/{res.data["id"]}', TwitterPost.sentAccout: accout.name}
+                {TwitterPost.sent: True, TwitterPost.sentDate: datetime.now(), TwitterPost.sentURL: sent_url, TwitterPost.sentAccout: accout.name}
             )
+            logger.info(f'Twitter Post Sent: {sent_url}')
             return res
         except Exception as e:
-            logger.error(f'Twitter Error: {e}')
+            if not isinstance(e, tweepy.errors.TooManyRequests):
+                logger.error(f'Twitter Error: {e}')
+            return False

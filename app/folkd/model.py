@@ -47,10 +47,10 @@ class Folkd(BaseDocument):
             client = FolkdClient(self.email,self.password, headless=True)
             res = client.send_post(details)
             client.driver.quit()
+            return res
         except Exception as e:
             logger.error('Folkd Error:', exc_info=True)
-            
-        return res
+        return False
 
     @classmethod
     async def send_random_post(cls):
@@ -66,12 +66,11 @@ class Folkd(BaseDocument):
                 tags=post.tags
             )
             res = accout.send_post(details)
-            logger.info('Folkd Post result:')
-            logger.info(res)
             if res:
                 await post.set(
                     {FolkdPost.sent: True, FolkdPost.sentDate: datetime.now(), FolkdPost.sentAccout: accout.name, FolkdPost.sentURL: res}
                 )
+                logger.info(f'Folkd Post Sent: {res}')
                 return res
         except Exception as e:
             logger.error('Folkd Error:', exc_info=True)

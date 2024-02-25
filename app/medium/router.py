@@ -19,7 +19,7 @@ async def test():
 
 @router.post("/account")
 async def create_medium_account(data: Medium) -> BaseResponse:
-    await data.get_acc_id()
+    data.account_id = data.get_acc_id()
     await data.save()
     return BaseResponse(data=data, message=Success.created)
 

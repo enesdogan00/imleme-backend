@@ -42,6 +42,16 @@ class Medium(BaseDocument):
     account_id: str = Field(title="Hesap ID", default="")
     access_token: str = Field(title="AccessToken", default="")
 
+    def get_acc_id(self):
+        headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0",
+            "Accept": "application/json",
+        }
+        url = 'https://api.medium.com/v1/me'
+        response = requests.get(url, headers=headers)
+        return response.json()["data"]["id"]
+
     def send_post(self, details: MediumPost):
         payload = {
             "title": details.title,
@@ -53,11 +63,14 @@ class Medium(BaseDocument):
         }
            
         headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0",
+            "Accept": "application/json",
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.access_token}"
         }
         url = f"https://api.medium.com/v1/users/{self.account_id}/posts"
         response = requests.request("POST", url, json=payload, headers=headers)
+        logger.info(f'Medium Post response: {vars(response)}')
         return response.json()
 
     @classmethod
@@ -70,9 +83,11 @@ class Medium(BaseDocument):
             res = accout.send_post(post)
             logger.info('Medium Post result:')
             logger.info(res)
+            sent_url = res["data"]["url"]
             await post.set(
-                {MediumPost.sent: True, MediumPost.sentDate: datetime.now(), MediumPost.sentURL: res["data"]["url"], MediumPost.sentAccout: accout.name}
+                {MediumPost.sent: True, MediumPost.sentDate: datetime.now(), MediumPost.sentURL: sent_url, MediumPost.sentAccout: accout.name}
             )
+            logger.info(f'Medium Post sent: {sent_url}')
             return res
         except Exception as e:
             logger.error('Medium Error:', exc_info=True)
