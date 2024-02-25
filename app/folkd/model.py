@@ -9,6 +9,7 @@ from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
 from app.mixins.posts import PostMixin
+from app.general.logger import logger
 
 
 class FolkdPost(PostMixin, BaseDocument):
@@ -47,10 +48,7 @@ class Folkd(BaseDocument):
             res = client.send_post(details)
             client.driver.quit()
         except Exception as e:
-            print(e)
-            st = format_exc()
-            print(st)
-            return False
+            logger.error('Folkd Error:', exc_info=True)
             
         return res
 
@@ -68,13 +66,13 @@ class Folkd(BaseDocument):
                 tags=post.tags
             )
             res = accout.send_post(details)
+            logger.info('Folkd Post result:')
+            logger.info(res)
             if res:
                 await post.set(
                     {FolkdPost.sent: True, FolkdPost.sentDate: datetime.now(), FolkdPost.sentAccout: accout.name, FolkdPost.sentURL: res}
                 )
                 return res
         except Exception as e:
-            print(e)
-            st = format_exc()
-            print(st)
+            logger.error('Folkd Error:', exc_info=True)
             return False

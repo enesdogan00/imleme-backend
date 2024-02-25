@@ -12,6 +12,8 @@
             "args": [
                 "app.app:app",
                 "--reload",
+                "--log-level",
+                "debug",
             ],
             "justMyCode": false,
             "env": {

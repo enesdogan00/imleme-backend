@@ -8,6 +8,7 @@ from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
 from app.mixins.posts import PostMixin
+from app.general.logger import logger
 
 
 class TwitterPost(PostMixin, BaseDocument):
@@ -58,13 +59,11 @@ class Twitter(BaseDocument):
             return False
         try:
             res = accout.send_post(post.text)
-            print(res)
+            logger.info('Twitter Post Reult:')
+            logger.info(res)
             await post.set(
                 {TwitterPost.sent: True, TwitterPost.sentDate: datetime.now(), TwitterPost.sentURL: f'https://twitter.com/{accout.name}/status/{res.data["id"]}', TwitterPost.sentAccout: accout.name}
             )
             return res
         except Exception as e:
-            print(e)
-            st = format_exc()
-            print(st)
-            return False
+            logger.error('Twitter Error:', exc_info=True)

@@ -10,6 +10,7 @@ from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
 from app.mixins.posts import PostMixin
+from app.general.logger import logger
 
 
 class TumblrPost(PostMixin, BaseDocument):
@@ -47,10 +48,7 @@ class Tumblr(BaseDocument):
             client.create_client(self.verifier)
             return client.create_text_post(details["title"], details["desc"])
         except Exception as e:
-            print(e)
-            st = format_exc()
-            print(st)
-            return False
+            logger.error('Tumblr Error:', exc_info=True)
 
 
     @classmethod
@@ -69,7 +67,5 @@ class Tumblr(BaseDocument):
                 )
                 return res
         except Exception as e:
-            print(e)
-            st = format_exc()
-            print(st)
+            logger.error('Tumblr Error:', exc_info=True)
             return False

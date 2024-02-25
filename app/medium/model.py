@@ -8,6 +8,7 @@ from pymongo import IndexModel
 
 from app.mixins.general import BaseDocument
 from app.mixins.posts import PostMixin
+from app.general.logger import logger
 
 
 class MediumPost(PostMixin, BaseDocument):
@@ -56,15 +57,8 @@ class Medium(BaseDocument):
             "Authorization": f"Bearer {self.access_token}"
         }
         url = f"https://api.medium.com/v1/users/{self.account_id}/posts"
-
         response = requests.request("POST", url, json=payload, headers=headers)
-        print(response.json())
         return response.json()
-    async def get_acc_id(self):
-        headers = {"Authorization": f"Bearer {self.access_token}"}
-        response = requests.request("GET", 'https://api.medium.com/v1/me', headers=headers)
-        self.account_id = response.json()["data"]["id"]
-        return True
 
     @classmethod
     async def send_random_post(cls):
@@ -74,11 +68,11 @@ class Medium(BaseDocument):
             return False
         try:
             res = accout.send_post(post)
-            print(res)
+            logger.info('Medium Post result:')
+            logger.info(res)
             await post.set(
                 {MediumPost.sent: True, MediumPost.sentDate: datetime.now(), MediumPost.sentURL: res["data"]["url"], MediumPost.sentAccout: accout.name}
             )
             return res
         except Exception as e:
-            print(e)
-            return False
+            logger.error('Medium Error:', exc_info=True)

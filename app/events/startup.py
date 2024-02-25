@@ -9,6 +9,7 @@ from app.folkd.model import Folkd
 from app.medium.model import Medium
 from app.rss.model import RSS
 from app.twitter.model import Twitter
+from app.general.logger import logger
 
 
 def custom_openapi():
@@ -37,9 +38,7 @@ async def send_random_post():
         try:
             await cls.send_random_post()
         except Exception as e:
-            st = format_exc()
-            print(st)
-            print(e)
+            logger.error(f"{cls.__name__} Error:", exc_info=True)
 
 
 @app.on_event("startup")
@@ -52,8 +51,7 @@ async def rss_to_twitter():
         except Exception as e:
             if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
                 return
-            st = format_exc()
-            print(st)
+            logger.error('RSS to Twitter Error:', exc_info=True)
 
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
@@ -65,8 +63,8 @@ async def rss_to_folkd():
         except Exception as e:
             if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
                 return
-            st = format_exc()
-            print(st)
+            logger.error('RSS to Folkd Error:', exc_info=True)
+
 
 @app.on_event("startup")
 @repeat_every(seconds=int(config("POST_INT", 120)))
@@ -78,5 +76,4 @@ async def rss_to_medium():
         except Exception as e:
             if all(err['code'] == 11000 for err in e.details.get("writeErrors", [{}])):
                 return
-            st = format_exc()
-            print(st)
+            logger.error('RSS to Medium Error:', exc_info=True)

@@ -151,7 +151,7 @@ class RSS(BaseDocument):
                 cls.sentDate <= end_time,
                 cls.sent == True,
             ).to_list():
-                print(item)
+                
                 ws.append([getattr(item, field) for field in fields.values()])
             tmp = NamedTemporaryFile(delete=False)
         wb.save(tmp.name)
