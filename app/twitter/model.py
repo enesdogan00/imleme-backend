@@ -66,4 +66,4 @@ class Twitter(BaseDocument):
             )
             return res
         except Exception as e:
-            logger.error('Twitter Error:', exc_info=True)
+            logger.error(f'Twitter Error: {e}')
