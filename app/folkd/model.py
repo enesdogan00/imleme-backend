@@ -44,7 +44,7 @@ class Folkd(BaseDocument):
 
     def send_post(self, details: Post):
         try:
-            client = FolkdClient(self.email,self.password, headless=True)
+            client = FolkdClient(self.email,self.password, headless=False)
             res = client.send_post(details)
             client.driver.quit()
             return res
@@ -59,10 +59,14 @@ class Folkd(BaseDocument):
         if not accout:
             return False
         try:
+            desc = post.desc
+            while len(desc) <= 300:
+                desc += " " + post.desc
+            desc = desc[:900]
             details = Post(
                 url=post.blogURL,
                 title=post.title,
-                desc=post.desc,
+                desc=desc,
                 tags=post.tags
             )
             res = accout.send_post(details)

@@ -17,8 +17,8 @@
             ],
             "justMyCode": false,
             "env": {
-                "MONGO_URI": "mongodb://localhost:27017/imleme-ali",
-                "POST_INT": "30"
+                "MONGO_URI": "mongodb://localhost:27017/imleme_mmg",
+                "POST_INT": "300"
             }
         },
     ]
