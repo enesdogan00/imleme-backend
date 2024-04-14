@@ -464,7 +464,7 @@ selenium = "^4.16.0"
 type = "git"
 url = "https://gitlab.com/enesdogan00/folkd_post.git"
 reference = "HEAD"
-resolved_reference = "5a7c076aac729a2bcb67fad60097c97ae7d583f6"
+resolved_reference = "0445e1d55ca496098b799288d0bd145fa5e12730"
 
 [[package]]
 name = "greenlet"
