@@ -1,0 +1,112 @@
+version: '3'
+services:
+  imleme_mmg:
+    image: registry.gitlab.com/imleme/backend:latest
+    container_name: imleme_mmg
+    environment:
+      - POST_INT=300
+      - MONGO_URI=mongodb://imleme_user:1mlemeXXX*@host.docker.internal:27017/imleme_nano
+    networks:
+      - seo
+    working_dir: /code
+    ports:
+      - 9090:8000
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.500'
+          memory: 1024M
+    command: uvicorn app.app:app --host 0.0.0.0 --port 8000
+  
+  
+  imleme_hak:
+    image: registry.gitlab.com/imleme/backend:latest
+    container_name: imleme_hak
+    environment:
+      - POST_INT=300
+      - MONGO_URI=mongodb://imleme_user:1mlemeXXX*@host.docker.internal:27017/imleme_nano
+    networks:
+      - seo
+    working_dir: /code
+    ports:
+      - 9091:8000
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.500'
+          memory: 1024M
+    command: uvicorn app.app:app --host 0.0.0.0 --port 8000
+  
+  
+  imleme_ali:
+    image: registry.gitlab.com/imleme/backend:latest
+    container_name: imleme_ali
+    environment:
+      - POST_INT=300
+      - MONGO_URI=mongodb://imleme_user:1mlemeXXX*@host.docker.internal:27017/imleme_nano
+    networks:
+      - seo
+    working_dir: /code
+    ports:
+      - 9092:8000
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.500'
+          memory: 1024M
+    command: uvicorn app.app:app --host 0.0.0.0 --port 8000
+  
+  
+  imleme_nano:
+    image: registry.gitlab.com/imleme/backend:latest
+    container_name: imleme_nano
+    environment:
+      - POST_INT=300
+      - MONGO_URI=mongodb://imleme_user:1mlemeXXX*@host.docker.internal:27017/imleme_nano
+    networks:
+      - seo
+    working_dir: /code
+    ports:
+      - 9093:8000
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.500'
+          memory: 1024M
+    command: uvicorn app.app:app --host 0.0.0.0 --port 8000
+  
+  
+  imleme_verilink:
+    image: registry.gitlab.com/imleme/backend:latest
+    container_name: imleme_verilink
+    environment:
+      - POST_INT=300
+      - MONGO_URI=mongodb://imleme_user:1mlemeXXX*@host.docker.internal:27017/imleme_nano
+    networks:
+      - seo
+    working_dir: /code
+    ports:
+      - 9094:8000
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.500'
+          memory: 1024M
+    command: uvicorn app.app:app --host 0.0.0.0 --port 8000
+networks:
+  seo:
