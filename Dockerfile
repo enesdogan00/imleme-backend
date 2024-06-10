@@ -14,7 +14,22 @@ WORKDIR /code
 
 COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
 
-RUN  apk update && apk add chromium chromium-chromedriver git && pip install --no-cache-dir --upgrade -r /code/requirements.txt 
+RUN  apk update && apk add --no-cache \
+chromium \
+chromium-chromedriver \
+bash \
+curl \
+jq \
+make \
+g++ \
+openjdk11-jdk \
+nodejs \
+npm \
+git \
+zlib-dev && pip install --upgrade pip && pip install --no-cache-dir --upgrade -r /code/requirements.txt 
+
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 COPY ./app ./app
 

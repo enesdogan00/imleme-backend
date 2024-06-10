@@ -44,7 +44,7 @@ class Folkd(BaseDocument):
 
     def send_post(self, details: Post):
         try:
-            client = FolkdClient(self.email,self.password, headless=False)
+            client = FolkdClient(self.email,self.password, headless=True)
             res = client.send_post(details)
             client.driver.quit()
             return res
